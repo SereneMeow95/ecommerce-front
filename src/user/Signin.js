@@ -1,6 +1,13 @@
 import React from 'react';
+import Layout from "../core/Layout";
 
 //signin page
-const Signin = () => <div>signin</div>;
+const Signin = () => (
+    <Layout title = "Signin Page" description = "Autism Care Ecommerce Web App Signin Page">
+        ...
+    </Layout>
+);
 
 export default Signin;
+
+
