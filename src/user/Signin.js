@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import Layout from "../core/Layout";
-import {signin} from "../auth";
+import {signin, authenticate} from "../auth";
 
 //signin page
 const Signin = () => {
     const [values, setValues] = useState({
-        email: '',
-        password: '',
+        email: 'serenemeow95@gmail.com',
+        password: 'Swse19956154',
         error: '',
         loading: false, //show loading when user is signing in
         redirectToReferrer: false //turn true after login successfully & redirect the user to other pages
@@ -27,9 +27,11 @@ const Signin = () => {
                 if (data.error) {
                     setValues ({...values, error: data.error, loading: false})
                 } else {
-                    setValues({
-                        ...values,
-                        redirectToReferrer: true
+                    authenticate(data, () => {
+                        setValues({
+                            ...values,
+                            redirectToReferrer: true
+                        });
                     });
                 }
             });
