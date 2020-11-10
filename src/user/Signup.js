@@ -10,12 +10,43 @@ const Signup = () => {
         password: '',
         error: '',
         success: false
-    })
+    });
+
+    const name = values;
+    const email = values;
+    const password = values;
+
+    //const {name, email, password} = values;
 
     const handleChange = name => event => {
         setValues({...values, error: false, [name]: event.target.value});
+    };
 
-    }
+    const signup = user => {
+        //console.log(name, email, password);
+        fetch (`${API}/signup`, {
+            method: "POST",
+            headers: {
+                Accept: "*/*",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err =>{
+            console.log(err);
+        })
+
+    };
+
+
+
+    const clickSubmit = (event) => {
+        event.preventDefault();
+        signup(name, email, password);
+    };
 
     const signUpForm = () => (
         <form>
@@ -34,9 +65,9 @@ const Signup = () => {
                 <input onChange={handleChange('password')} type="password" className="form-control"/>
             </div>
 
-            <button className = "btn btn-primary" >Submit</button>
+            <button onClick = {clickSubmit} className = "btn btn-primary" >Submit</button>
         </form>
-    )
+    );
 
     return (
         <Layout
