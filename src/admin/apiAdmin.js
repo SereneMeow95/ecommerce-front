@@ -33,6 +33,5 @@ export const createProduct = (userId, token, product) => {
         })
         .catch(err =>{
             console.log(err);
-        })
-
+        });
 };
