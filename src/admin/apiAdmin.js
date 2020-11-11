@@ -15,8 +15,7 @@ export const createCategory = (userId, token, category) => {
         })
         .catch(err =>{
             console.log(err);
-        })
-
+        });
 };
 
 export const createProduct = (userId, token, product) => {
