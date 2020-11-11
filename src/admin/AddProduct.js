@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import Layout from "../core/Layout";
 import {isAuthenticated} from "../auth";
 import {Link} from "react-router-dom";
-import {createProduct} from "./apiAdmin";
+import {createProduct, getCategories} from "./apiAdmin";
 
 const AddProduct = () => {
 
@@ -17,7 +17,7 @@ const AddProduct = () => {
         photo: '',
         loading: false,
         error: '',
-        createProduct: '',
+        createdProduct: '',
         redirectToProfile: false,
         formData: ''
     });
@@ -39,20 +39,36 @@ const AddProduct = () => {
         formData
     } = values;
 
+    //load categories and set form data
+    const init = () => {
+        getCategories().then(data => {
+            if (data.error) {
+                setValues({...values, error: data.error});
+            } else {
+                setValues({
+                    ...values,
+                    categories: data,
+                    formData: new FormData()
+                });
+            }
+        });
+    };
+
     //run when everytime theres a change
     useEffect(() => {
-        setValues({...values, formData: new FormData()})
+        init();
     }, []);
 
     const handleChange = name => event => {
         const value = name === 'photo' ? event.target.files[0] : event.target.value;
-        formData.set(name, value)
-        setValues({...values, [name]: value})
+        formData.set(name, value);
+        setValues({...values, [name]: value});
     };
 
     const clickSubmit = event => {
         event.preventDefault();
         setValues({...values, error: "", loading: true});
+        window.setTimeout(function(){window.location.reload()}, 2000);
 
         createProduct(user._id, token, formData)
             .then(data => {
@@ -69,6 +85,7 @@ const AddProduct = () => {
                         loading: false,
                         createdProduct: data.name
                     });
+                    window.setTimeout(function(){window.location.reload()}, 3000);
                 }
             });
     };
@@ -122,8 +139,12 @@ const AddProduct = () => {
                     onChange={handleChange('category')}
                     className="form-control"
                 >
-                    <option value="5faacf2659f33d53b8d41028">Python</option>
-                    <option value="5faacf2659f33d53b8d41028">PHP</option>
+                    <option>Please select</option>
+                    {categories && categories.map((c, i) => (
+                        <option key={i} value={c._id}>
+                            {c.name}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -133,6 +154,7 @@ const AddProduct = () => {
                     onChange={handleChange('shipping')}
                     className="form-control"
                 >
+                    <option>Please select</option>
                     <option value="0">No</option>
                     <option value="1">Yes</option>
                 </select>
@@ -152,13 +174,45 @@ const AddProduct = () => {
         </form>
     );
 
+    const showError = () => (
+        <div
+            className="alert alert-danger"
+             style={{display: error ? '' : 'none'}}
+        >
+            {error}
+        </div>
+    );
+
+    const showSuccess = () => (
+        <div
+            className="alert alert-info"
+            style={{display: createdProduct ? '' : 'none'}}
+        >
+            <h2>{`${createdProduct}`} is created!</h2>
+        </div>
+    );
+
+    const showLoading = () =>
+        loading && (
+            <div className="alert alert-success">
+                <h2>Loading...</h2>
+            </div>
+        )
+
+
     return (
         <Layout
             title="Add Product"
             description={`Good day, ${user.name}! Ready to add a new product?`}
         >
             <div className="row">
-                <div className="col-md-8 offset-md-2">{newPostForm()}</div>
+                <div className="col-md-8 offset-md-2">
+                    {showLoading()}
+                    {showSuccess()}
+                    {showError()}
+                    {newPostForm()}
+                </div>
+
             </div>
         </Layout>
     );
