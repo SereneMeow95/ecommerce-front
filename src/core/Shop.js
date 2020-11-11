@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import Card from "./Card";
 import {getCategories} from './apiCore';
 import Checkbox from "./Checkbox";
+import RadioBox from "./RadioBox";
 import {prices} from "./fixedPrices";
 
 
@@ -52,6 +53,16 @@ const Shop = () => {
                                 handleFilters(filters, "category")}
                         />
                     </ul>
+
+                    <h4>Filter by Price Range</h4>
+                    <ul>
+                        <RadioBox
+                            prices={prices}
+                            handleFilters={filters =>
+                                handleFilters(filters, "price")}
+                        />
+                    </ul>
+
                 </div>
 
                 <div className="col-8">
