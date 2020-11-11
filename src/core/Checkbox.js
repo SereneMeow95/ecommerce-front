@@ -1,25 +1,26 @@
 import React, {useState, useEffect} from "react";
 
-const Checkbox = ({categories}) => {
-    const [checked, setChecked] = useState([])
+const Checkbox = ({categories, handleFilters}) => {
+    const [checked, setChecked] = useState([]);
 
     const handleToggle = c => () => {
         //return the first index or -1 to tell if the category is there
-        const currentCategoryId = checked.indexOf(c)
+        const currentCategoryId = checked.indexOf(c);
 
         //return all the categories in the state
-        const newCheckedCategoryId = [...checked]
+        const newCheckedCategoryId = [...checked];
 
         //if user check category that isnt in checked state > push
         //else pull/uncheck
         if(currentCategoryId === -1) {
-            newCheckedCategoryId.push(c)
+            newCheckedCategoryId.push(c);
         } else {
-            newCheckedCategoryId.splice(currentCategoryId, 1)
+            newCheckedCategoryId.splice(currentCategoryId, 1);
         }
-        console.log(newCheckedCategoryId)
-        setChecked(newCheckedCategoryId)
-    }
+        //console.log(newCheckedCategoryId);
+        setChecked(newCheckedCategoryId);
+        handleFilters(newCheckedCategoryId);
+    };
 
 
     return categories.map((c, i) => (
