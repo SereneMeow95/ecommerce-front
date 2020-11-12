@@ -15,6 +15,7 @@ const Shop = () => {
     const [error, setError] = useState(false);
     const [limit, setLimit] = useState(6);
     const [skip, setSkip] = useState(0);
+    const [size, setSize] = useState(0);
     const [filteredResults, setFilteredResults] = useState([]);
 
     //load categories and set form data
@@ -30,13 +31,40 @@ const Shop = () => {
 
     const loadFilteredResults = newFilters => {
         //console.log(newFilters);
-        getFilteredProducts(skip, limit, newFilters).then(data => {
+        getFilteredProducts(0, limit, newFilters).then(data => {
             if(data.error) {
                 setError(data.error);
             } else {
                 setFilteredResults(data.data);
+                setSize(data.size);
+                setSkip(0);
             }
         });
+    };
+
+    const loadMore = () => {
+        let toSkip = skip + limit;
+        //console.log(newFilters);
+        getFilteredProducts(toSkip, limit, myFilters.filters).then(data => {
+            if(data.error) {
+                setError(data.error);
+            } else {
+                setFilteredResults([...filteredResults, ...data.data]);
+                setSize(data.size);
+                setSkip(toSkip);
+            }
+        });
+    };
+
+    const loadMoreButton = () => {
+        return (
+            size > 0 &&
+            size >= limit && (
+                    <button onClick={loadMore} className="btn btn-warning mb-5">
+                        Load More
+                    </button>
+            )
+        );
     };
 
     //use when the components mount
@@ -89,23 +117,24 @@ const Shop = () => {
                     </ul>
 
                     <h4>Filter by Price Range</h4>
-                    <ul>
+                    <div>
                         <RadioBox
                             prices={prices}
                             handleFilters={filters =>
                                 handleFilters(filters, "price")}
                         />
-                    </ul>
-
+                    </div>
                 </div>
 
                 <div className="col-8">
                     <h2 className="mb-4">Products</h2>
                     <div className="row">
                         {filteredResults.map((product, i) => (
-                            <Card key={i} product={product} />
+                                <Card key={i} product={product} />
                         ))}
                     </div>
+                    <hr/>
+                    {loadMoreButton()}
                 </div>
             </div>
         </Layout>

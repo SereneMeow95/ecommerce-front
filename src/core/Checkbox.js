@@ -30,7 +30,6 @@ const Checkbox = ({categories, handleFilters}) => {
                 value={checked.indexOf(c._id === -1)}
                 type="checkbox"
                 className="form-check-input"
-                className="mr-2"
             />
             <label className="form-check-label">{c.name}</label>
         </li>
