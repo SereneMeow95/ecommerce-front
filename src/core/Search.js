@@ -13,6 +13,12 @@ const Search = () => {
 
     const {categories, category, search, results, searched} = data;
 
+    // const categories = data.categories;
+    // const category = data.category;
+    // const search = data.search;
+    // const results = data.results;
+    // const searched = data.searched;
+
     const loadCategories = () => {
         getCategories().then(data => {
             if(data.error) {
@@ -30,7 +36,7 @@ const Search = () => {
     const searchData = () => {
         //console.log(search, category);
         if(search) {
-            list({search: search || undefined, category:category})
+            list({search: search || undefined, category: category})
                 .then(response => {
                     if(response.error) {
                         console.log(response.error);
@@ -48,6 +54,16 @@ const Search = () => {
 
     const handleChange = name => event => {
         setData({...data, [name]: event.target.value, searched:false});
+    };
+
+    const searchedProducts = (results = []) => {
+        return (
+            <div className="row">
+                {results.map((product, i) => (
+                    <Card key={i} product={product} />
+                ))}
+            </div>
+        );
     };
 
     const searchForm = () => (
@@ -84,9 +100,9 @@ const Search = () => {
 
     return (
         <div className="row">
-            <div
-                className="container mb-3">{searchForm()}
-                {JSON.stringify(results)}
+            <div className="container mb-3">{searchForm()}</div>
+            <div className="container-fluid mb-3">
+                {searchedProducts(results)}
             </div>
         </div>
     );
