@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { getProducts } from './apiCore';
+import { getProducts, getBraintreeClientToken } from './apiCore';
 import { emptyCart } from './cartHelpers';
 import Card from './Card';
 import { isAuthenticated } from '../auth';
 import { Link } from 'react-router-dom';
-// import "braintree-web"; // not using this package
-//import DropIn from 'braintree-web-drop-in-react';
+import DropIn from 'braintree-web-drop-in-react';
 
 const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     const [data, setData] = useState({
@@ -20,26 +19,26 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     const userId = isAuthenticated() && isAuthenticated().user._id;
     const token = isAuthenticated() && isAuthenticated().token;
 
-    // const getToken = (userId, token) => {
-    //     getBraintreeClientToken(userId, token).then(data => {
-    //         if (data.error) {
-    //             console.log(data.error);
-    //             setData({ ...data, error: data.error });
-    //         } else {
-    //             console.log(data);
-    //             setData({ clientToken: data.clientToken });
-    //         }
-    //     });
-    // };
+    const getToken = (userId, token) => {
+        getBraintreeClientToken(userId, token).then(data => {
+            if (data.error) {
+                console.log(data.error);
+                setData({ ...data, error: data.error });
+            } else {
+                console.log(data);
+                setData({ clientToken: data.clientToken });
+            }
+        });
+    };
 
-    // useEffect(() => {
-    //     getToken(userId, token);
-    // }, []);
+    useEffect(() => {
+        getToken(userId, token);
+    }, []);
 
-    // const handleAddress = event => {
-    //     setData({ ...data, address: event.target.value });
-    // };
-    //
+    const handleAddress = event => {
+        setData({ ...data, address: event.target.value });
+    };
+
     const getTotal = () => {
         return products.reduce((currentValue, nextValue) => {
             return currentValue + nextValue.count * nextValue.price;
@@ -48,7 +47,7 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
 
     const showCheckout = () => {
         return isAuthenticated() ? (
-            <button className="btn btn-success">Checkout</button>
+            <div>{showDropIn()}</div>
         ) : (
             <Link to="/signin">
                 <button className="btn btn-primary">
@@ -132,38 +131,39 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     //             setData({ ...data, error: error.message });
     //         });
     // };
-    //
-    // const showDropIn = () => (
-    //     <div onBlur={() => setData({ ...data, error: '' })}>
-    //         {data.clientToken !== null && products.length > 0 ? (
-    //             <div>
-    //                 <div className="gorm-group mb-3">
-    //                     <label className="text-muted">Delivery address:</label>
-    //                     <textarea
-    //                         onChange={handleAddress}
-    //                         className="form-control"
-    //                         value={data.address}
-    //                         placeholder="Type your delivery address here..."
-    //                     />
-    //                 </div>
-    //
-    //                 <DropIn
-    //                     options={{
-    //                         authorization: data.clientToken,
-    //                         paypal: {
-    //                             flow: 'vault'
-    //                         }
-    //                     }}
-    //                     onInstance={instance => (data.instance = instance)}
-    //                 />
-    //                 <button onClick={buy} className="btn btn-success btn-block">
-    //                     Pay
-    //                 </button>
-    //             </div>
-    //         ) : null}
-    //     </div>
-    // );
-    //
+    // onBlur={() => setData({ ...data, error: '' })}
+
+    const showDropIn = () => (
+        <div>
+            {data.clientToken !== null && products.length > 0 ? (
+                <div>
+                    {/*<div className="gorm-group mb-3">*/}
+                    {/*    <label className="text-muted">Delivery address:</label>*/}
+                    {/*    <textarea*/}
+                    {/*        onChange={handleAddress}*/}
+                    {/*        className="form-control"*/}
+                    {/*        value={data.address}*/}
+                    {/*        placeholder="Type your delivery address here..."*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+
+                    <DropIn
+                        options={{
+                            authorization: data.clientToken,
+                            // paypal: {
+                            //     flow: 'vault'
+                            // }
+                        }}
+                        onInstance={instance => (data.instance = instance)}
+                    />
+                    <button className="btn btn-success btn-block">
+                        Pay
+                    </button>
+                </div>
+            ) : null}
+        </div>
+    );
+
     // const showError = error => (
     //     <div className="alert alert-danger" style={{ display: error ? '' : 'none' }}>
     //         {error}
