@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProducts, getBraintreeClientToken, processPayment } from './apiCore';
+import { getProducts, getBraintreeClientToken, processPayment, createOrder } from './apiCore';
 import { emptyCart } from './cartHelpers';
 import Card from './Card';
 import { isAuthenticated } from '../auth';
@@ -22,10 +22,8 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     const getToken = (userId, token) => {
         getBraintreeClientToken(userId, token).then(data => {
             if (data.error) {
-                console.log(data.error);
                 setData({ ...data, error: data.error });
             } else {
-                console.log(data);
                 setData({ clientToken: data.clientToken });
             }
         });
@@ -35,9 +33,9 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
         getToken(userId, token);
     }, []);
 
-    const handleAddress = event => {
-        setData({ ...data, address: event.target.value });
-    };
+    // const handleAddress = event => {
+    //     setData({ ...data, address: event.target.value });
+    // };
 
     const getTotal = () => {
         return products.reduce((currentValue, nextValue) => {
@@ -94,36 +92,39 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
                 processPayment(userId, token, paymentData)
                     .then(response => {
                         //console.log(response);
-                        setData({...data, success: response.success});
-                        // empty cart
-                        // create order
+                        //     setData({...data, success: response.success});
+                        //     emptyCart(() => {
+                        //         console.log("Payment success and empty cart.");
+                        //     });
+                        //
+                        // })
 
-                //         const createOrderData = {
-                //             products: products,
-                //             transaction_id: response.transaction.id,
-                //             amount: response.transaction.amount,
-                //             address: deliveryAddress
-                //         };
-                //
-                //         createOrder(userId, token, createOrderData)
-                //             .then(response => {
-                //                 emptyCart(() => {
-                //                     setRun(!run); // run useEffect in parent Cart
-                //                     console.log('payment success and empty cart');
-                //                     setData({
-                //                         loading: false,
-                //                         success: true
-                //                     });
-                //                 });
-                //             })
-                //             .catch(error => {
-                //                 console.log(error);
-                //                 setData({ loading: false });
-                //             });
+                        const createOrderData = {
+                            products: products,
+                            transaction_id: response.transaction.id,
+                            amount: response.transaction.amount,
+                            //address: deliveryAddress
+                        };
+
+                        createOrder(userId, token, createOrderData)
+                            .then(response => {
+                                emptyCart(() => {
+                                    setRun(!run); // run useEffect in parent Cart
+                                    console.log('payment success and empty cart');
+                                    setData({
+                                        loading: false,
+                                        success: true
+                                    });
+                                });
+                            })
+                            .catch(error => {
+                                console.log(error);
+                                setData({loading: false});
+                            });
                     })
                     .catch(error => {
                         console.log(error);
-                        // setData({ loading: false });
+                        setData({loading: false});
                     });
             })
             .catch(error => {
@@ -136,22 +137,22 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
         <div onBlur={() => setData({ ...data, error: '' })}>
             {data.clientToken !== null && products.length > 0 ? (
                 <div>
-                    <div className="gorm-group mb-3">
-                        <label className="text-muted">Delivery address:</label>
-                        <textarea
-                            onChange={handleAddress}
-                            className="form-control"
-                            value={data.address}
-                            placeholder="Type your delivery address here..."
-                        />
-                    </div>
+                    {/*<div className="gorm-group mb-3">*/}
+                    {/*    <label className="text-muted">Delivery address:</label>*/}
+                    {/*    <textarea*/}
+                    {/*        onChange={handleAddress}*/}
+                    {/*        className="form-control"*/}
+                    {/*        value={data.address}*/}
+                    {/*        placeholder="Type your delivery address here..."*/}
+                    {/*    />*/}
+                    {/*</div>*/}
 
                     <DropIn
                         options={{
                             authorization: data.clientToken,
-                            paypal: {
-                                flow: 'vault'
-                            }
+                            // paypal: {
+                            //     flow: 'vault'
+                            // }
                         }}
                         onInstance={instance => (data.instance = instance)}
                     />
@@ -189,3 +190,29 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
 };
 
 export default Checkout;
+
+// empty cart
+// create order
+
+//         const createOrderData = {
+//             products: products,
+//             transaction_id: response.transaction.id,
+//             amount: response.transaction.amount,
+//             address: deliveryAddress
+//         };
+//
+//         createOrder(userId, token, createOrderData)
+//             .then(response => {
+//                 emptyCart(() => {
+//                     setRun(!run); // run useEffect in parent Cart
+//                     console.log('payment success and empty cart');
+//                     setData({
+//                         loading: false,
+//                         success: true
+//                     });
+//                 });
+//             })
+//             .catch(error => {
+//                 console.log(error);
+//                 setData({ loading: false });
+//             });
