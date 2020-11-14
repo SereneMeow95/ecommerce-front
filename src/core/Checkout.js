@@ -33,9 +33,9 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
         getToken(userId, token);
     }, []);
 
-    // const handleAddress = event => {
-    //     setData({ ...data, address: event.target.value });
-    // };
+    const handleAddress = event => {
+        setData({ ...data, address: event.target.value });
+    };
 
     const getTotal = () => {
         return products.reduce((currentValue, nextValue) => {
@@ -55,19 +55,8 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
         )
     };
 
-    //
-    // const showCheckout = () => {
-    //     return isAuthenticated() ? (
-    //         <div>{showDropIn()}</div>
-    //     ) : (
-    //         <Link to="/signin">
-    //             <button className="btn btn-primary">Sign in to checkout</button>
-    //         </Link>
-    //     );
-    // };
-    //
-    // let deliveryAddress = data.address;
-    //
+    let deliveryAddress = data.address;
+
     const buy = () => {
         setData({ loading: true });
         // send the nonce to your server
@@ -91,19 +80,13 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
 
                 processPayment(userId, token, paymentData)
                     .then(response => {
-                        //console.log(response);
-                        //     setData({...data, success: response.success});
-                        //     emptyCart(() => {
-                        //         console.log("Payment success and empty cart.");
-                        //     });
-                        //
-                        // })
+                        console.log(response);
 
                         const createOrderData = {
                             products: products,
-                            transaction_id: response.transaction.id,
-                            amount: response.transaction.amount,
-                            //address: deliveryAddress
+                            transaction_id: response.transaction.id, //for future reference
+                            amount: response.transaction.amount, //the amount spent
+                            address: deliveryAddress
                         };
 
                         createOrder(userId, token, createOrderData)
@@ -137,15 +120,15 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
         <div onBlur={() => setData({ ...data, error: '' })}>
             {data.clientToken !== null && products.length > 0 ? (
                 <div>
-                    {/*<div className="gorm-group mb-3">*/}
-                    {/*    <label className="text-muted">Delivery address:</label>*/}
-                    {/*    <textarea*/}
-                    {/*        onChange={handleAddress}*/}
-                    {/*        className="form-control"*/}
-                    {/*        value={data.address}*/}
-                    {/*        placeholder="Type your delivery address here..."*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+                    <div className="gorm-group mb-3">
+                        <label className="text-muted">Delivery address:</label>
+                        <textarea
+                            onChange={handleAddress}
+                            className="form-control"
+                            value={data.address}
+                            placeholder="Type your delivery address here..."
+                        />
+                    </div>
 
                     <DropIn
                         options={{
@@ -190,29 +173,3 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
 };
 
 export default Checkout;
-
-// empty cart
-// create order
-
-//         const createOrderData = {
-//             products: products,
-//             transaction_id: response.transaction.id,
-//             amount: response.transaction.amount,
-//             address: deliveryAddress
-//         };
-//
-//         createOrder(userId, token, createOrderData)
-//             .then(response => {
-//                 emptyCart(() => {
-//                     setRun(!run); // run useEffect in parent Cart
-//                     console.log('payment success and empty cart');
-//                     setData({
-//                         loading: false,
-//                         success: true
-//                     });
-//                 });
-//             })
-//             .catch(error => {
-//                 console.log(error);
-//                 setData({ loading: false });
-//             });
