@@ -69,7 +69,7 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     // let deliveryAddress = data.address;
     //
     const buy = () => {
-        //setData({ loading: true });
+        setData({ loading: true });
         // send the nonce to your server
         // nonce = data.instance.requestPaymentMethod()
         let nonce;
@@ -150,9 +150,9 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
                     <DropIn
                         options={{
                             authorization: data.clientToken,
-                            // paypal: {
-                            //     flow: 'vault'
-                            // }
+                            paypal: {
+                                flow: 'vault'
+                            }
                         }}
                         onInstance={instance => (data.instance = instance)}
                     />
