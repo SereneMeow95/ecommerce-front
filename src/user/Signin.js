@@ -6,8 +6,8 @@ import {signin, authenticate, isAuthenticated} from "../auth";
 //signin page
 const Signin = () => {
     const [values, setValues] = useState({
-        email: 'serenemeow95@gmail.com',
-        password: 'Swse19956154',
+        email: '',
+        password: '',
         error: '',
         loading: false, //show loading when user is signing in
         redirectToReferrer: false //turn true after login successfully & redirect the user to other pages
@@ -40,27 +40,57 @@ const Signin = () => {
 
     const signUpForm = () => (
         <form>
-            <div className="form-group">
-                <label className = "text-muted">Email</label>
+
+            <div className="form">
                 <input
                     onChange={handleChange('email')}
                     type="email"
-                    className="form-control"
+                    // name="name"
                     value={email}
-                />
+                    autoComplete="off"
+                    required/>
+                <label htmlFor="email" className="label-name">
+                    <span className="content-name">Email</span>
+                </label>
             </div>
 
-            <div className="form-group">
-                <label className = "text-muted">Password</label>
+            {/*<div className="form-group">*/}
+            {/*    <label className = "text-muted">Email</label>*/}
+            {/*    <input*/}
+            {/*        onChange={handleChange('email')}*/}
+            {/*        type="email"*/}
+            {/*        className="form-control"*/}
+            {/*        value={email}*/}
+            {/*    />*/}
+            {/*</div>*/}
+
+            <div className="form">
                 <input
                     onChange={handleChange('password')}
                     type="password"
-                    className="form-control"
+                    // name="name"
                     value={password}
-                />
+                    autoComplete="off"
+                    required/>
+                <label htmlFor="password" className="label-name">
+                    <span className="content-name">Password</span>
+                </label>
             </div>
 
-            <button onClick = {clickSubmit} className = "btn btn-primary" >Submit</button>
+            {/*<div className="form-group">*/}
+            {/*    <label className = "text-muted">Password</label>*/}
+            {/*    <input*/}
+            {/*        onChange={handleChange('password')}*/}
+            {/*        type="password"*/}
+            {/*        className="form-control"*/}
+            {/*        value={password}*/}
+            {/*    />*/}
+            {/*</div>*/}
+
+            <br />
+            <div className="text-center">
+                <button onClick = {clickSubmit} className = "btn btn-primary" >Sign In</button>
+            </div>
         </form>
     );
 
@@ -97,8 +127,8 @@ const Signin = () => {
 
     return (
         <Layout
-            title = "Signup Page"
-            description = "Autism Care Ecommerce Web App Signup Page"
+            title = "Signin Page"
+            description = "Autism Care Ecommerce Web App Signin Page"
             className = "container col-md-8 offset-md-2"
         >
             {showLoading()}
