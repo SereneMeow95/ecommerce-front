@@ -18,6 +18,23 @@ export const createCategory = (userId, token, category) => {
         });
 };
 
+export const updateCategory = (categoryId, userId, token, category) => {
+    return fetch(`${API}/category/${categoryId}/${userId}`, {
+        method: 'PUT',
+        headers: {
+            // content type?
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(category)
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
 export const createProduct = (userId, token, product) => {
     return fetch (`${API}/product/create/${userId}`, {
         method: "POST",
@@ -33,6 +50,31 @@ export const createProduct = (userId, token, product) => {
         .catch(err =>{
             console.log(err);
         });
+};
+
+export const getCategory = categoryId => {
+    return fetch(`${API}/category/${categoryId}`, {
+        method: 'GET'
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const deleteCategory = (categoryId, userId, token) => {
+    return fetch(`${API}/category/${categoryId}/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
 };
 
 //populate the categories option
@@ -140,6 +182,73 @@ export const updateProduct = (productId, userId, token, product) => {
             Authorization: `Bearer ${token}`
         },
         body: product
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const createNews = (userId, token, news) => {
+    return fetch (`${API}/news/create/${userId}`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: news
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err =>{
+            console.log(err);
+        });
+};
+
+export const getNews = () => {
+    return fetch(`${API}/news?limit=undefined`, {
+        method: 'GET'
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const deleteNews = (newsId, userId, token) => {
+    return fetch(`${API}/news/${newsId}/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const getOneNews = newsId => {
+    return fetch(`${API}/news/${newsId}`, {
+        method: 'GET'
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const updateNews = (newsId, userId, token, news) => {
+    return fetch(`${API}/news/${newsId}/${userId}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: news
     })
         .then(response => {
             return response.json();

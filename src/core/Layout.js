@@ -2,6 +2,7 @@ import React from 'react';
 import Menu from './Menu';
 import "../style.css";
 
+
 //Layout
 const Layout = ({title = 'Title', description = 'Description', className, children}) => (
     <div>

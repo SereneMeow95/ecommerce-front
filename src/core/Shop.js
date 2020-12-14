@@ -5,6 +5,7 @@ import {getCategories, getFilteredProducts} from './apiCore';
 import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
 import {prices} from "./fixedPrices";
+import {FooterContainer} from "../containers/footer";
 
 
 const Shop = () => {
@@ -13,7 +14,7 @@ const Shop = () => {
     });
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(false);
-    const [limit, setLimit] = useState(6);
+    const [limit, setLimit] = useState(12);
     const [skip, setSkip] = useState(0);
     const [size, setSize] = useState(0);
     const [filteredResults, setFilteredResults] = useState([]);
@@ -60,9 +61,11 @@ const Shop = () => {
         return (
             size > 0 &&
             size >= limit && (
-                    <button onClick={loadMore} className="btn btn-warning mb-5">
-                        Load More
+                <div className="text-center">
+                    <button onClick={loadMore} className="btn btn-square btn-warning mb-5">
+                        MORE PRODUCTS
                     </button>
+                </div>
             )
         );
     };
@@ -106,8 +109,8 @@ const Shop = () => {
             className="container-fluid"
         >
             <div className="row">
-                <div className="col-4">
-                    <h4>Filter by Categories</h4>
+                <div className="font col-2 ml-4">
+                    <h3>Filter by Categories</h3>
                     <ul>
                         <Checkbox
                             categories={categories}
@@ -116,7 +119,10 @@ const Shop = () => {
                         />
                     </ul>
 
-                    <h4>Filter by Price Range</h4>
+                    <br/>
+                    <br/>
+
+                    <h3>Filter by Price Range</h3>
                     <div>
                         <RadioBox
                             prices={prices}
@@ -126,11 +132,10 @@ const Shop = () => {
                     </div>
                 </div>
 
-                <div className="col-8">
-                    <h2 className="mb-4">Products</h2>
+                <div className="col-9 ml-5">
                     <div className="row">
                         {filteredResults.map((product, i) => (
-                            <div key={i} className="col-4 mb-3">
+                            <div key={i} className="col-3 mb-3">
                                 <Card product={product} />
                             </div>
                         ))}
@@ -139,6 +144,7 @@ const Shop = () => {
                     {loadMoreButton()}
                 </div>
             </div>
+            <FooterContainer />
         </Layout>
     );
 };

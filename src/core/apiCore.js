@@ -2,7 +2,7 @@ import {API} from "../config";
 import queryString from 'query-string';
 
 export const getProducts = sortBy => {
-    return fetch(`${API}/products?sortBy=${sortBy}&order=desc&limit=6`, {
+    return fetch(`${API}/products?sortBy=${sortBy}&order=desc&limit=12`, {
         method: "GET"
     })
         .then(response => {
@@ -46,6 +46,7 @@ export const getFilteredProducts = (skip, limit, filters = {}) => {
 export const list = params => {
     const query = queryString.stringify(params);
     console.log("query", query);
+    console.log(`${API}/products/search?${query}`);
     return fetch(`${API}/products/search?${query}`, {
         method: "GET"
     })
@@ -115,6 +116,38 @@ export const createOrder = (userId, token, createOrderData) => {
             Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ order: createOrderData })
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const getNews = sortBy => {
+    return fetch(`${API}/news?sortBy=${sortBy}&order=desc&limit=undefined`, {
+        method: "GET"
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const listNews = params => {
+    const query = queryString.stringify(params);
+    console.log(query);
+    return fetch(`${API}/news/search?${query}`, {
+        method: "GET"
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const readNews = (newsId) => {
+    return fetch(`${API}/news/${newsId}`, {
+        method: "GET"
     })
         .then(response => {
             return response.json();

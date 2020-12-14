@@ -30,7 +30,7 @@ const Signup = () => {
             return
         } else {
             //console.log("YAS");
-            signup({name, email, password, confirmPassword})
+            signup({name, email, password})
                 .then(data => {
                     //console.log("YAS1");
                     if (data.error) {
@@ -148,7 +148,7 @@ const Signup = () => {
 
             <br />
             <div className="text-center">
-                <button onClick = {clickSubmit} className = "btn btn-primary" >Sign Up</button>
+                <button onClick = {clickSubmit} className = "btn btn-primary btn-square" >Sign Up</button>
             </div>
         </form>
     );

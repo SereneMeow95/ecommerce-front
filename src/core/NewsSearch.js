@@ -1,36 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import {getCategories, list} from "./apiCore";
-import Card from "./Card";
+import {listNews} from "./apiCore";
+import NewsCard from "./NewsCard";
 
-const Search = () => {
+const NewsSearch = () => {
     const [data, setData] = useState({
-        categories: [],
-        category: "", //user pick categories
         search: "", //search keyword
         results: [], //results of search
         searched: false
     });
 
-    const {categories, category, search, results, searched} = data;
-
-    const loadCategories = () => {
-        getCategories().then(data => {
-            if(data.error) {
-                console.log(data.error)
-            } else {
-                setData({...data, categories: data})
-            }
-        });
-    };
-
-    useEffect(() => {
-        loadCategories()
-    }, []);
+    const {search, results, searched} = data;
 
     const searchData = () => {
-        //console.log(search, category);
+        console.log('search', search);
         if(search) {
-            list({search: search || undefined, category: category})
+            listNews({search: search || undefined})
                 .then(response => {
                     if(response.error) {
                         console.log(response.error);
@@ -51,28 +35,28 @@ const Search = () => {
     };
 
     const searchMessage = (searched, results) => {
-        if (searched && results.length !== 1 && results.length > 0) {
-            return `Found ${results.length} products`;
-        }
-
-        if (searched && results.length == 1) {
-            return `Found ${results.length} product`;
+        // if (searched && results.length !== 1 && results.length > 0) {
+        //     return `Found ${results.length} products`;
+        // }
+        //
+        if (searched && results.length > 0) {
+            return `Found ${results.length} news`;
         }
 
         if (searched && results.length < 1) {
-            return `Oops! No related product :(`;
+            return `Oops! No related news :(`;
         }
     };
 
-    const searchedProducts = (results = []) => {
+    const searchedNews = (results = []) => {
         return (
             <div>
                 <h2 className="mt-4 mb-4">
                     {searchMessage(searched, results)}
                 </h2>
                 <div className="row">
-                    {results.map((product, i) => (
-                        <Card key={i} product={product} />
+                    {results.map((news, i) => (
+                        <NewsCard key={i} news={news} />
                     ))}
                 </div>
             </div>
@@ -83,20 +67,6 @@ const Search = () => {
         <form onSubmit={searchSubmit}>
             <span className="input-group-text">
                 <div className="input-group input-group-lg">
-                    <div className="input-group-prepend">
-                        <select
-                            className="btn mr-2"
-                            onChange={handleChange("category")}
-                        >
-                            <option value="All">All</option>
-                            {categories.map((c, i) => (
-                                <option key={i} value={c._id}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
                     <input
                         type="search"
                         className="form-control"
@@ -115,10 +85,10 @@ const Search = () => {
         <div className="row">
             <div className="container mb-3">{searchForm()}</div>
             <div className="container-fluid mb-3">
-                {searchedProducts(results)}
+                {searchedNews(results)}
             </div>
         </div>
     );
 };
 
-export default Search;
+export default NewsSearch;

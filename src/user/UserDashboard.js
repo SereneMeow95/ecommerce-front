@@ -4,6 +4,7 @@ import {isAuthenticated} from "../auth";
 import {Link} from "react-router-dom";
 import {getPurchaseHistory} from "./apiUser";
 import moment from "moment";
+import {FooterContainer} from "../containers/footer";
 
 const Dashboard = () => {
 
@@ -29,8 +30,8 @@ const Dashboard = () => {
 
     const userLinks = () => {
         return (
-            <div className="card">
-                <h4 className="card-header">User Links</h4>
+            <div className="card text-center">
+                <h4 className="card-header name-link">User Links</h4>
                 <ul className="list-group">
                     <li className="list-group-item">
                         <Link className="nav-link" to="/cart">
@@ -50,7 +51,7 @@ const Dashboard = () => {
     const userInfo = () => {
         return (
             <div className="card mb-5">
-                <h3 className="card-header">User Information</h3>
+                <h3 className="card-header name-info">User Information</h3>
                 <ul className="list-group">
                     <li className="list-group-item">{name}</li>
                     <li className="list-group-item">{email}</li>
@@ -65,7 +66,7 @@ const Dashboard = () => {
     const purchaseHistory = history => {
         return (
             <div className="card mb-5">
-                <h3 className="card-header">Purchase history</h3>
+                <h3 className="card-header name-history">Purchase history</h3>
                 <ul className="list-group">
                     <li className="list-group-item">
                         {history.map((h, i) => {
@@ -111,6 +112,8 @@ const Dashboard = () => {
                     {purchaseHistory(history)}
                 </div>
             </div>
+            <br/>
+            <FooterContainer />
         </Layout>
     );
 };

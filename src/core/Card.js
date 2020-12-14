@@ -3,6 +3,7 @@ import {Link, Redirect} from "react-router-dom";
 import ShowImage from "./ShowImage";
 import moment from "moment";
 import {addItem, updateItem, removeItem} from "./cartHelpers";
+import {isAuthenticated} from "../auth";
 
 const Card = (
     {
@@ -22,7 +23,7 @@ const Card = (
         return (
             showViewProductButton && (
                 <Link to={`/product/${product._id}`} className="mr-2"> {/*link of button*/}
-                    <button className="btn btn-outline-primary mr-2 mb-2">
+                    <button className="btn btn-outline-success btn-square mr-2 mb-2">
                         View Product
                     </button>
                 </Link>
@@ -31,7 +32,6 @@ const Card = (
     };
 
     const addToCart = () => {
-        // console.log('added');
         addItem(product, setRedirect(true));
     };
 
@@ -43,7 +43,7 @@ const Card = (
 
     const showAddToCart = (showAddToCartButton) => {
         return showAddToCartButton && (
-            <button onClick={addToCart} className="btn btn-outline-warning mt-2 mb-2">
+            <button onClick={addToCart} className="btn btn-outline-warning btn-square mb-2 ">
                 Add to Cart
             </button>
         );
@@ -51,9 +51,9 @@ const Card = (
 
     const showStock = (quantity) => {
         return quantity > 0 ? (
-            <span className="badge badge-primary badge-pill">In Stock</span>
+            <span className="badge badge-primary badge-pill mb-2">In Stock</span>
         ) : (
-            <span className="badge badge-primary badge-pill">Out of Stock</span>
+            <span className="badge badge-primary badge-pill mb-2">Out of Stock</span>
         );
     };
 
@@ -89,7 +89,7 @@ const Card = (
                         removeItem(product._id);
                         setRun(!run); // run useEffect in parent Cart
                     }}
-                    className="btn btn-outline-danger mt-2 mb-2"
+                    className="btn btn-outline-danger btn-square mb-2"
                 >
                     Remove Product
                 </button>
@@ -99,19 +99,26 @@ const Card = (
 
     return (
         <div className="card">
-            <div className="card-header name">{product.name}</div>
+            <div className="card-header name text-center">{product.name}</div>
             <div className="card-body">
                 {shouldRedirect(redirect)}
                 <ShowImage item={product} url="product" />
+                {showViewProductButton && (
                 <p className="lead mt-2">
-                    {product.description.substring(0, 100)}
+                    {product.description.substring(0, 70)}...
                 </p>
-                <p className="black-10">${product.price}</p>
-                <p className="black-9">
-                    Category: {product.category && product.category.name}
+                )}
+                {!showViewProductButton && (
+                    <p className="lead mt-2">
+                        {product.description.substring(0, 10000)}
+                    </p>
+                )}
+                <p className="yellow-5">&nbsp;RM {product.price}</p>
+                <p className="yellow-4">
+                    &nbsp;Category: {product.category && product.category.name}
                 </p>
-                <p className="black-8">
-                    Added on {moment(product.createdAt).fromNow()}
+                <p className="yellow-3">
+                    &nbsp;Added on {moment(product.createdAt).fromNow()}
                 </p>
 
                 {showStock(product.quantity)}

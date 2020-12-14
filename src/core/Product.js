@@ -34,27 +34,33 @@ const Product = (props) => {
     return (
         <Layout
             title = {product && product.name}
-            description = {
-                product &&
-                product.description &&
-                product.description.substring(0, 100)
-            }
+            description = ""
+
+                // product &&
+                // product.description &&
+                // product.description.substring(0, 100)
+
             className="container-fluid"
         >
             <div className="row">
-                <div className="col-8">
+                <div className="col-1"></div>
+                <div className="col-7">
                     {
                         product &&
-                        product.description && (
+                        product.description &&
+                        // product.description.substring(0, 1000) &&
+                        (
                             <Card product={product} showViewProductButton={false} />
                         )
                     }
                 </div>
 
-                <div className="col-4">
+                <div className="col-1"></div>
+
+                <div className="col-3 ">
                     <h4>Related Products</h4>
                     {relatedProduct.map((p, i) => (
-                        <div className="mb-3">
+                        <div className="mb-3 ">
                             <Card key={i} product={p} />
                         </div>
                     ))}

@@ -16,6 +16,13 @@ import Orders from "./admin/Orders";
 import Profile from "./user/Profile";
 import ManageProducts from "./admin/ManageProducts";
 import UpdateProduct from "./admin/UpdateProduct";
+import UpdateCategory from './admin/updateCategory';
+import ManageCategories from "./admin/ManageCategories";
+import AddNews from "./admin/AddNews";
+import News from './core/News';
+import SingleNews from "./core/SingleNews";
+import ManageNews from "./admin/ManageNews";
+import UpdateNews from "./admin/UpdateNews";
 
 const Routes = () => {
     return (
@@ -23,35 +30,25 @@ const Routes = () => {
         <Switch>
             <Route path = "/" exact component={Home} />
             <Route path = "/shop" exact component={Shop} />
+            <Route path = "/news" exact component={News} />
             <Route path = "/signin" exact component={Signin} />
             <Route path = "/signup" exact component={Signup} />
-            <PrivateRoute
-                path = "/user/dashboard"
-                exact
-                component={Dashboard}
-            />
-            <AdminRoute
-                path = "/admin/dashboard"
-                exact
-                component={AdminDashboard}
-            />
-            <AdminRoute
-                path = "/create/category"
-                exact
-                component={AddCategory}
-            />
-            <AdminRoute
-                path = "/create/product"
-                exact
-                component={AddProduct}
-            />
+            <PrivateRoute path = "/user/dashboard" exact component={Dashboard}/>
+            <AdminRoute path = "/admin/dashboard" exact component={AdminDashboard}/>
+            <AdminRoute path = "/create/category" exact component={AddCategory}/>
+            <AdminRoute path = "/create/product" exact component={AddProduct}/>
             <Route path = "/product/:productId" exact component={Product} />
+            <Route path = "/news/:newsId" exact component={SingleNews} />
             <Route path = "/cart" exact component={Cart} />
             <AdminRoute path="/admin/orders" exact component={Orders} />
             <PrivateRoute path="/profile/:userId" exact component={Profile} />
             <AdminRoute path="/admin/products" exact component={ManageProducts} />
+            <AdminRoute path="/admin/categories" exact component={ManageCategories} />
             <AdminRoute path="/admin/product/update/:productId" exact component={UpdateProduct} />
-            {/*<AdminRoute path="/admin/category/update/:categoryId" exact component={UpdateCategory} />*/}
+            <AdminRoute path="/admin/category/update/:categoryId" exact component={UpdateCategory} />
+            <AdminRoute path = "/create/news" exact component={AddNews}/>
+            <AdminRoute path="/admin/news" exact component={ManageNews} />
+            <AdminRoute path="/admin/news/update/:newsId" exact component={UpdateNews} />
         </Switch>
     </BrowserRouter>
     );

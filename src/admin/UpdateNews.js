@@ -5,84 +5,68 @@ import {
     Link,
     //Redirect
 } from 'react-router-dom';
-import { getProduct, getCategories, updateProduct } from './apiAdmin';
+import { getOneNews, updateNews } from './apiAdmin';
 
-const UpdateProduct = ({ match }) => {
+const UpdateNews = ({ match }) => {
     const [values, setValues] = useState({
-        name: '',
+        newsTitle: '',
         description: '',
-        price: '',
-        categories: [],
-        category: '',
-        shipping: '',
-        quantity: '',
         photo: '',
         loading: false,
         error: false,
-        createdProduct: '',
+        createdNews: '',
         //redirectToProfile: false,
         formData: ''
     });
-    const [categories, setCategories] = useState([]);
 
     const { user, token } = isAuthenticated();
     const {
-        name,
+        newsTitle,
         description,
-        price,
-        category,
-        shipping,
-        quantity,
         loading,
         error,
-        createdProduct,
+        createdNews,
         //redirectToProfile,
         formData
     } = values;
 
-    const init = productId => {
-        getProduct(productId).then(data => {
+    const init = newsId => {
+        getOneNews(newsId).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
                 // populate the state
                 setValues({
                     ...values,
-                    name: data.name,
+                    newsTitle: data.newsTitle,
                     description: data.description,
-                    price: data.price,
-                    category: data.category._id,
-                    shipping: data.shipping,
-                    quantity: data.quantity,
                     formData: new FormData()
                 });
-                // load categories
-                initCategories();
             }
         });
     };
 
     // load categories and set form data
-    const initCategories = () => {
-        getCategories().then(data => {
-            if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
-                setCategories(data);
-            }
-        });
-    };
+    // const initCategories = () => {
+    //     getCategories().then(data => {
+    //         if (data.error) {
+    //             setValues({ ...values, error: data.error });
+    //         } else {
+    //             setCategories(data);
+    //         }
+    //     });
+    // };
 
     const goBack = () => (
         <div className="text-center mt-3">
-            <Link to="/admin/dashboard" className="text-index">
-                Return to Dashboard
+            <Link to="/admin/news" className="text-index">
+                Return to News
             </Link>
         </div>
     );
 
     useEffect(() => {
-        init(match.params.productId);
+        init(match.params.newsId);
     }, []);
 
     const handleChange = name => event => {
@@ -96,21 +80,19 @@ const UpdateProduct = ({ match }) => {
         setValues({ ...values, error: '', loading: true });
         window.setTimeout(function(){window.location.reload()}, 4000);
 
-        updateProduct(match.params.productId, user._id, token, formData).then(data => {
+        updateNews(match.params.newsId, user._id, token, formData).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
                 setValues({
                     ...values,
-                    name: '',
+                    newsTitle: '',
                     description: '',
                     photo: '',
-                    price: '',
-                    quantity: '',
                     loading: false,
                     error: false,
                     //redirectToProfile: true,
-                    createdProduct: data.name
+                    createdNews: data.name
                 });
             }
         });
@@ -142,14 +124,14 @@ const UpdateProduct = ({ match }) => {
 
             <div className="form">
                 <input
-                    onChange={handleChange('name')}
+                    onChange={handleChange('newsTitle')}
                     type="text"
                     // name="name"
-                    value={name}
+                    value={newsTitle}
                     autoComplete="off"
                     required/>
-                <label htmlFor="name" className="label-name">
-                    <span className="content-name">Name</span>
+                <label htmlFor="newsTitle" className="label-name">
+                    <span className="content-name">Title</span>
                 </label>
             </div>
 
@@ -175,7 +157,6 @@ const UpdateProduct = ({ match }) => {
                 </label>
             </div>
 
-
             {/*<div className="form-group">*/}
             {/*    <label className="text-muted">Price</label>*/}
             {/*    <input*/}
@@ -186,75 +167,11 @@ const UpdateProduct = ({ match }) => {
             {/*    />*/}
             {/*</div>*/}
 
-            <div className="form">
-                <input
-                    onChange={handleChange('price')}
-                    type="number"
-                    // name="name"
-                    value={price}
-                    autoComplete="off"
-                    required/>
-                <label htmlFor="price" className="label-name">
-                    <span className="content-name">Price</span>
-                </label>
-            </div>
-
-            <div className="form">
-                <input
-                    onChange={handleChange('quantity')}
-                    type="number"
-                    value={quantity}
-                    autoComplete="off"
-                    required/>
-                <label htmlFor="quantity" className="label-name">
-                    <span className="content-name">Quantity</span>
-                </label>
-            </div>
-
-            <div className="form-group mt-4">
-                <label className="text-muted">Category</label>
-                <select
-                    onChange={handleChange('category')}
-                    className="form-control"
-                >
-                    <option>Please select</option>
-                    {categories && categories.map((c, i) => (
-                        <option key={i} value={c._id}>
-                            {c.name}
-                        </option>
-                    ))}
-                </select>
-            </div>
-
-            <div className="form-group mt-4">
-                <label className="text-muted">Shipping</label>
-                <select
-                    onChange={handleChange('shipping')}
-                    className="form-control"
-                >
-                    <option>Please select</option>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
-
-            {/*<div className="form-group">*/}
-            {/*    <label className="text-muted">Quantity</label>*/}
-            {/*    <input*/}
-            {/*        onChange={handleChange('quantity')}*/}
-            {/*        type="number"*/}
-            {/*        className="form-control"*/}
-            {/*        value={quantity}*/}
-            {/*    />*/}
-            {/*</div>*/}
-
-
             <br/>
 
             <div className="text-center">
-             <button className="btn btn-outline-success btn-square">Update Product</button>
+                <button className="btn btn-outline-success btn-square">Update News</button>
             </div>
-
 
         </form>
     );
@@ -266,8 +183,8 @@ const UpdateProduct = ({ match }) => {
     );
 
     const showSuccess = () => (
-        <div className="alert alert-info" style={{ display: createdProduct ? '' : 'none' }}>
-            <h2>{`${createdProduct}`} is updated successfully!</h2>
+        <div className="alert alert-info" style={{ display: createdNews ? '' : 'none' }}>
+            <h2>{`${createdNews}`} is updated successfully!</h2>
         </div>
     );
 
@@ -291,7 +208,7 @@ const UpdateProduct = ({ match }) => {
 
 
     return (
-        <Layout title="Update Product" description={`G'day ${user.name}, please edit the product.`}>
+        <Layout title="Update News" description={`G'day ${user.name}, wanna edit the news?`}>
             {goBack()}
             <div className="row">
                 <div className="col-md-8 offset-md-2">
@@ -307,4 +224,4 @@ const UpdateProduct = ({ match }) => {
     );
 };
 
-export default UpdateProduct;
+export default UpdateNews;

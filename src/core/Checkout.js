@@ -48,9 +48,11 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
             <div>{showDropIn()}</div>
         ) : (
             <Link to="/signin">
-                <button className="btn btn-primary">
+                <div className="text-center">
+                    <button className="btn btn-primary btn-square">
                     Sign in to Checkout
-                </button>
+                    </button>
+                </div>
             </Link>
         )
     };
@@ -139,7 +141,7 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
                         }}
                         onInstance={instance => (data.instance = instance)}
                     />
-                    <button onClick={buy} className="btn btn-success btn-block">
+                    <button onClick={buy} className="btn btn-success btn-square btn-block">
                         Pay
                     </button>
                 </div>
@@ -154,7 +156,7 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     );
 
     const showSuccess = success => (
-        <div className="alert alert-info" style={{ display: success ? '' : 'none' }}>
+        <div className="alert alert-success" style={{ display: success ? '' : 'none' }}>
             Thanks! Your payment was successful!
         </div>
     );

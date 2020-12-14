@@ -22,6 +22,7 @@ const AddCategory = () => {
         setError('')
         setSuccess(false)
         //make request to api to create category
+        window.setTimeout(function(){window.location.reload()}, 2000);
         createCategory(user._id, token, {name}).then(data => {
             if (data.error) {
                 setError(true);
@@ -35,8 +36,10 @@ const AddCategory = () => {
 
     const newCategoryForm = () => (
         <form onSubmit={clickSubmit}>
+            <div className="text-muted">
+                <h4>Category Name</h4>
+            </div>
             <div className="form-group">
-                <label className="text-muted">Name</label>
                 <input
                     type="text"
                     className="form-control"
@@ -46,9 +49,12 @@ const AddCategory = () => {
                     required
                 />
             </div>
-            <button className="btn btn-outline-primary">
-                Create Category
-            </button>
+
+            <div className="text-center mt-4">
+                <button className="btn btn-outline-success btn-square">
+                    Create Category
+                </button>
+            </div>
         </form>
     );
 
@@ -65,8 +71,8 @@ const AddCategory = () => {
     };
 
     const goBack = () => (
-        <div className="mt-5">
-            <Link to="/admin/dashboard" className="text-warning">
+        <div className="text-center mt-3">
+            <Link to="/admin/dashboard" className="text-index">
                 Return to Dashboard
             </Link>
         </div>
@@ -76,6 +82,7 @@ const AddCategory = () => {
         <Layout
             title="Add Category"
             description={`Good day, ${user.name}! Ready to add a new category?`}
+            className = "container col-md-8 offset-md-2"
         >
             <div className="row">
                 <div className="col-md-8 offset-md-2">

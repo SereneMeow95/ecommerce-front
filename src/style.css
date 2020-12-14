@@ -3,19 +3,35 @@
 .jumbotron,
 .nav :hover {
     border-radius: 0px;
+    transition: 200ms ease-in;
 }
 
-/*body {*/
-/*    height: 60vh;*/
-/*    !*display: flex;*!*/
-/*    justify-content: space-around;*/
-/*    align-items: center;*/
-/*    flex-direction: column;*/
-/*    font-family: "Cambria Math";*/
-/*    !*background-image: linear-gradient(to right, #fadadd,#429bb8,#40c164);*!*/
-/*    !*background-size: 400%;*!*/
-/*    !*animation: bg-animation 10s infinite alternate;*!*/
-/*}*/
+.nav-tabs{
+    background-color:#016670;
+}
+
+.nav-link{
+    font-weight: bold;
+}
+
+.font{
+    font-weight: bold;
+    color: #016670;
+}
+
+
+body {
+    height: 60vh;
+    /*display: flex;*/
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Cambria Math";
+    font-size: 18px;
+    /*background-image: linear-gradient(to right, #fadadd,#429bb8,#40c164);*/
+    /*background-size: 400%;*/
+    /*animation: bg-animation 10s infinite alternate;*/
+}
 
 /*@keyframes bg-animation {*/
 /*    0% {*/
@@ -34,6 +50,7 @@
     height: 80px;
     overflow: hidden;
 }
+
 
 .form input{
     width: 100%;
@@ -89,6 +106,12 @@
     text-align: center;
 }
 
+.btn-square {
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 /* cart badge */
 .cart-badge,
 .cart-badge:hover {
@@ -97,13 +120,37 @@
     font-size: 12px;
     font-style: normal;
     color: #000;
-    background: #e73c7e;
+    background: #EDEAE5;
 }
 
 /*product name*/
 .name {
-    background: forestgreen;
-    color: white;
+    background: #77A6F7;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.name-news {
+    background: #65CCB8;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.name-link {
+    background: #86B3D1;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.name-info {
+    background: #BC4639;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.name-history {
+    background: #B39BC8;
+    color: #ffffff;
     font-weight: bold;
 }
 
@@ -127,10 +174,23 @@
     background: #b3b3b3;
 }
 
+.yellow-5 {
+    background: #FFFDAF;
+}
+
+.yellow-4 {
+    background: #FFFEC8;
+}
+
+.yellow-3 {
+    background: #FFFEE0;
+}
+
 
 /*product image*/
 .product-img {
     min-height: 100px;
+    /*max-height: 400px;*/
 }
 
 .jumbotron h2 {
@@ -197,3 +257,16 @@
         background-position: 0% 50%;
     }
 }
+
+.link {
+    margin-bottom: 20px;
+    color: #016670;
+    font-weight: bold;
+}
+.link:hover {
+    color: #F39A27;
+    transition: 200ms ease-in;
+}
+
+
+

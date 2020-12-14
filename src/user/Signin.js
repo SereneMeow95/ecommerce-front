@@ -54,16 +54,6 @@ const Signin = () => {
                 </label>
             </div>
 
-            {/*<div className="form-group">*/}
-            {/*    <label className = "text-muted">Email</label>*/}
-            {/*    <input*/}
-            {/*        onChange={handleChange('email')}*/}
-            {/*        type="email"*/}
-            {/*        className="form-control"*/}
-            {/*        value={email}*/}
-            {/*    />*/}
-            {/*</div>*/}
-
             <div className="form">
                 <input
                     onChange={handleChange('password')}
@@ -77,19 +67,9 @@ const Signin = () => {
                 </label>
             </div>
 
-            {/*<div className="form-group">*/}
-            {/*    <label className = "text-muted">Password</label>*/}
-            {/*    <input*/}
-            {/*        onChange={handleChange('password')}*/}
-            {/*        type="password"*/}
-            {/*        className="form-control"*/}
-            {/*        value={password}*/}
-            {/*    />*/}
-            {/*</div>*/}
-
             <br />
             <div className="text-center">
-                <button onClick = {clickSubmit} className = "btn btn-primary" >Sign In</button>
+                <button onClick = {clickSubmit} className = "btn btn-info btn-square" >Sign In</button>
             </div>
         </form>
     );

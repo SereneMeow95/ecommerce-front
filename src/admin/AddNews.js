@@ -2,61 +2,37 @@ import React, {useState, useEffect} from "react";
 import Layout from "../core/Layout";
 import {isAuthenticated} from "../auth";
 import {Link} from "react-router-dom";
-import {createProduct, getCategories} from "./apiAdmin";
+import {createNews} from "./apiAdmin";
 
-const AddProduct = () => {
+const AddNews = () => {
 
     const [values, setValues] = useState({
-        name: '',
+        newsTitle: '',
         description: '',
-        price: '',
-        categories: [],
-        category:'',
-        shipping:'',
-        quantity: '',
         photo: '',
         loading: false,
         error: '',
-        createdProduct: '',
-        redirectToProfile: false,
+        createdNews: '',
+        // redirectToProfile: false,
         formData: ''
     });
 
     const {user, token} = isAuthenticated();
 
     const {
-        name,
+        newsTitle,
         description,
-        price,
-        categories,
-        category,
-        shipping,
-        quantity,
         loading,
         error,
-        createdProduct,
-        redirectToProfile,
+        createdNews,
+        // redirectToProfile,
         formData
     } = values;
 
-    //load categories and set form data
-    const init = () => {
-        getCategories().then(data => {
-            if (data.error) {
-                setValues({...values, error: data.error});
-            } else {
-                setValues({
-                    ...values,
-                    categories: data,
-                    formData: new FormData()
-                });
-            }
-        });
-    };
-
     //run when everytime theres a change
     useEffect(() => {
-        init();
+        // init();
+        setValues({...values, formData: new FormData()})
     }, []);
 
     const handleChange = name => event => {
@@ -70,7 +46,7 @@ const AddProduct = () => {
         setValues({...values, error: "", loading: true});
         window.setTimeout(function(){window.location.reload()}, 2000);
 
-        createProduct(user._id, token, formData)
+        createNews(user._id, token, formData)
             .then(data => {
                 if (data.error) {
                     console.log('NO');
@@ -79,13 +55,11 @@ const AddProduct = () => {
                     console.log('YAS');
                     setValues({
                         ...values,
-                        name: '',
+                        newsTitle: '',
                         description: '',
                         photo: '',
-                        price: '',
-                        quantity: '',
                         loading: false,
-                        createdProduct: data.name
+                        createdNews: data.name
                     });
                     // window.setTimeout(function(){window.location.reload()}, 3000);
                 }
@@ -118,14 +92,14 @@ const AddProduct = () => {
 
             <div className="form">
                 <input
-                    onChange={handleChange('name')}
+                    onChange={handleChange('newsTitle')}
                     type="text"
                     // name="name"
-                    value={name}
+                    value={newsTitle}
                     autoComplete="off"
                     required/>
-                <label htmlFor="name" className="label-name">
-                    <span className="content-name">Name</span>
+                <label htmlFor="newsTitle" className="label-name">
+                    <span className="content-name">News Title</span>
                 </label>
             </div>
 
@@ -151,84 +125,10 @@ const AddProduct = () => {
                 </label>
             </div>
 
-
-            {/*<div className="form-group">*/}
-            {/*    <label className="text-muted">Price</label>*/}
-            {/*    <input*/}
-            {/*        onChange={handleChange('price')}*/}
-            {/*        type="number"*/}
-            {/*        className="form-control"*/}
-            {/*        value={price}*/}
-            {/*    />*/}
-            {/*</div>*/}
-
-            <div className="form">
-                <input
-                    onChange={handleChange('price')}
-                    type="number"
-                    // name="name"
-                    value={price}
-                    autoComplete="off"
-                    required/>
-                <label htmlFor="price" className="label-name">
-                    <span className="content-name">Price</span>
-                </label>
-            </div>
-
-            <div className="form">
-                <input
-                    onChange={handleChange('quantity')}
-                    type="number"
-                    value={quantity}
-                    autoComplete="off"
-                    required/>
-                <label htmlFor="quantity" className="label-name">
-                    <span className="content-name">Quantity</span>
-                </label>
-            </div>
-
-            <div className="form-group mt-4">
-                    <label className="text-muted">Category</label>
-                    <select
-                        onChange={handleChange('category')}
-                    className="form-control"
-                >
-                    <option>Please select</option>
-                    {categories && categories.map((c, i) => (
-                        <option key={i} value={c._id}>
-                            {c.name}
-                        </option>
-                    ))}
-                </select>
-            </div>
-
-            <div className="form-group mt-4">
-                <label className="text-muted">Shipping</label>
-                <select
-                    onChange={handleChange('shipping')}
-                    className="form-control"
-                >
-                    <option>Please select</option>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
-
-            {/*<div className="form-group">*/}
-            {/*    <label className="text-muted">Quantity</label>*/}
-            {/*    <input*/}
-            {/*        onChange={handleChange('quantity')}*/}
-            {/*        type="number"*/}
-            {/*        className="form-control"*/}
-            {/*        value={quantity}*/}
-            {/*    />*/}
-            {/*</div>*/}
-
-
             <br/>
 
             <div className="text-center">
-                <button className="btn btn-outline-success btn-square">Create Product</button>
+                <button className="btn btn-outline-success btn-square">Publish</button>
             </div>
 
         </form>
@@ -237,7 +137,7 @@ const AddProduct = () => {
     const showError = () => (
         <div
             className="alert alert-danger"
-             style={{display: error ? '' : 'none'}}
+            style={{display: error ? '' : 'none'}}
         >
             {error}
         </div>
@@ -246,9 +146,9 @@ const AddProduct = () => {
     const showSuccess = () => (
         <div
             className="alert alert-info"
-            style={{display: createdProduct ? '' : 'none'}}
+            style={{display: createdNews ? '' : 'none'}}
         >
-            <h2>{`${createdProduct}`} is created!</h2>
+            <h2>{`${createdNews}`} is created!</h2>
         </div>
     );
 
@@ -270,8 +170,8 @@ const AddProduct = () => {
 
     return (
         <Layout
-            title="Add Product"
-            description={`Good day, ${user.name}! Ready to add a new product?`}
+            title="Create News"
+            description={`Good day, ${user.name}! What news today?`}
         >
             {goBack()}
             <div className="row">
@@ -288,4 +188,4 @@ const AddProduct = () => {
     );
 };
 
-export default AddProduct;
+export default AddNews;

@@ -42,12 +42,12 @@ const Orders = () => {
     const showOrdersLength = () => {
         if (orders.length > 0) {
             return (
-                <h1 className="text-danger display-2">
+                <h2 className="text-danger">
                     Total orders: {orders.length}
-                </h1>
+                </h2>
             );
         } else {
-            return <h1 className="text-danger">No orders</h1>;
+            return <h2 className="text-danger">No orders</h2>;
         }
     };
 
@@ -94,6 +94,14 @@ const Orders = () => {
         </div>
     );
 
+    const goBack = () => (
+        <div className="text-center mt-3">
+            <Link to="/admin/dashboard" className="text-index">
+                Return to Dashboard
+            </Link>
+        </div>
+    );
+
     return (
         <Layout
             title="Orders"
@@ -102,19 +110,21 @@ const Orders = () => {
             }, you can manage all the orders here`}
             className="container-fluid"
         >
+            {goBack()}
+            <br/>
             <div className="row">
                 <div className="col-md-8 offset-md-2">
                     {showOrdersLength()}
-
                     {orders.map((o, oIndex) => {
                         return (
                             <div
                                 className="mt-5"
                                 key={oIndex}
-                                style={{ borderBottom: "5px solid indigo" }}
+                                style={{ borderBottom: "5px dashed red" }}
                             >
-                                <h2 className="mb-5">
-                                    <span className="bg-primary">
+                                <br/>
+                                <h2 className="mb-3">
+                                    <span className="bg-warning">
                                         Order ID: {o._id}
                                     </span>
                                 </h2>
